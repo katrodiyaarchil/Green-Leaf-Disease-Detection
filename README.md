@@ -1,6 +1,11 @@
 # Green-Leaf-Disease-Detection
 Detecting disease from the green leaf using OpenCV and image processing
 
+*In this repository functions.py file contains processing functions written in python-openCV.*
+
+*main.py file coontains driver code to call functions.*
+
+
 **Below are the implementation screenshots**
 
 **1.Original Image**
