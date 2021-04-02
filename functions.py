@@ -4,6 +4,7 @@ import math
 
 
 # Segment the part containing Green Leaf from Image
+
 def segmentation(img):
 
         GRAY_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -19,10 +20,68 @@ def segmentation(img):
         new_img = cv2.bitwise_and(img, img, mask=mask)
         return new_img
 
+# Another Segmentation
+
+def segmentation(img):
+  
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    pixel_number = gray.shape[0] * gray.shape[1]
+    mean_weight = 1.0 / pixel_number
+    his, bins = np.histogram(gray, np.array(range(0, 256)))
+    final_thresh = -1
+    final_value = -1
+    for t in bins[1:-1]:
+        wb = np.sum(his[:t]) * mean_weight
+        wf = np.sum(his[t:]) * mean_weight
+
+        mub = np.mean(his[:t])
+        muf = np.mean(his[t:])
+        value = wb * wf * (mub - muf) ** 2
+ 
+        if value > final_value:
+            final_thresh = t
+            final_value = value
+    final_img = gray.copy()
+
+    final_img[gray > final_thresh] = 255
+    final_img[gray <= final_thresh] = 0
+   
+ 
+    final_img = cv2.equalizeHist(final_img)
+    _, thresh = cv2.threshold(final_img, 0, final_thresh, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    img_contours = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)[-2]
+    img_contours = sorted(img_contours, key=cv2.contourArea)
+    mask = np.zeros(img.shape[:2], np.uint8)
+ 
+    for i in img_contours:
+        mask = np.zeros(img.shape[:2], np.uint8)
+        cv2.drawContours(mask, [i], -1, 255, -1)
+ 
+    new_img = cv2.bitwise_and(img, img, mask=mask)
+    return new_img
 
 
 
+# Compare both Segmentaion Images
 
+def compareTwo(k1, k2):
+        gray1 = cv2.cvtColor(k1,cv2.COLOR_BGR2GRAY)
+        ret, thresh1 = cv2.threshold(gray1,0,255,cv2.THRESH_BINARY)
+        count1 = cv2.countNonZero(thresh1)
+
+        gray2 = cv2.cvtColor(k2,cv2.COLOR_BGR2GRAY)
+        ret, thresh2 = cv2.threshold(gray2,0,255,cv2.THRESH_BINARY)
+        count2 = cv2.countNonZero(thresh2)
+
+
+        if(count1>count2):
+          k=k1
+
+        else:
+          k=k2
+        
+        return k
 
 
 # Apply contrasting to the image to make colors more clear
@@ -97,7 +156,7 @@ def damaged_only(img):
    # img = cv2.imread(contrasted_img)
     hsv=cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
     upper_gree=np.array([80,255,255])
-    lower_gree=np.array([35,0,0])
+    lower_gree=np.array([15,0,0])
     mask=cv2.inRange(hsv,lower_gree,upper_gree)
     final=cv2.bitwise_and(img,img,mask=mask)
     defected = cv2.subtract(img , final)
