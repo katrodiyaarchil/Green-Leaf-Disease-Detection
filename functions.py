@@ -22,7 +22,7 @@ def segmentation(img):
 
 # Another Segmentation
 
-def segmentation(img):
+def segmentation1(img):
   
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
