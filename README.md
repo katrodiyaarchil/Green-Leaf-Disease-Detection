@@ -5,6 +5,10 @@ Detecting disease from the green leaf using OpenCV and image processing
 
 *main.py file coontains driver code to call functions.*
 
+*database.py file deals with sqlite database named sample.db*
+
+*sample.db is sample database file with four Disease onl, you can add your owns*
+
 
 **Below are the implementation screenshots**
 
@@ -33,3 +37,7 @@ Detecting disease from the green leaf using OpenCV and image processing
 
 ![image](https://user-images.githubusercontent.com/73387028/113294250-c158ce00-92c4-11eb-988c-5b995eadeddd.png)
 ![image](https://user-images.githubusercontent.com/73387028/113293860-4ee7ee00-92c4-11eb-8161-3330c76689e5.png)
+
+**6.Disease Detected along with damaged area**
+
+![image](https://user-images.githubusercontent.com/73387028/113380368-04a95000-934a-11eb-927a-828198581a8d.png)
